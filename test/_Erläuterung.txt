@@ -1,0 +1,7 @@
+{Code}-{Number}.txt
+
+Code:
+    I : invalid, not a valid mosaic file
+    E : easy, solvable with naive steps
+    A : advanced, solved with advanced steps
+    N : not solvable
