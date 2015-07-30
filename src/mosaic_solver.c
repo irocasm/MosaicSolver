@@ -22,29 +22,29 @@ static void get_neighbour_stats(int i, int width, int height, uint8_t *field, ne
     // TODO
     //n.push(i);
     if (i%width != 0) { //not at the left
-		//n.push(i-1);
-		if (i >= width) { //not at the top
-			//n.push(i-1-width);
-		}
-		if (i < (height-1)*width) { //not at the bottom
-			//n.push(i-1+width);
-		}
-	}
-	if (i%width != width-1) { //not at the right
-		//n.push(i+1);
-		if (i >= width) { //not at the top
-			//n.push(i+1-width);
-		}
-		if (i < (height-1)*width) { //not at the bottom
-			//n.push(i+1+width);
-		}
-	}
-	if (i >= width) { //not at the top
-		//n.push(i-width);
-	}
-	if (i < (height-1)*width) { //not at the bottom
-		//n.push(i+width);
-	}
+        //n.push(i-1);
+        if (i >= width) { //not at the top
+            //n.push(i-1-width);
+        }
+        if (i < (height-1)*width) { //not at the bottom
+            //n.push(i-1+width);
+        }
+    }
+    if (i%width != width-1) { //not at the right
+        //n.push(i+1);
+        if (i >= width) { //not at the top
+            //n.push(i+1-width);
+        }
+        if (i < (height-1)*width) { //not at the bottom
+            //n.push(i+1+width);
+        }
+    }
+    if (i >= width) { //not at the top
+        //n.push(i-width);
+    }
+    if (i < (height-1)*width) { //not at the bottom
+        //n.push(i+width);
+    }
 }
 /**
  * param colour: 0x10 BLACK, 0x20 WHITE
@@ -56,29 +56,29 @@ static int set_neighbours_to(int i, int width, int height, uint8_t *field, int c
     // TODO
     //n.push(i);
     if (i%width != 0) { //not at the left
-		//n.push(i-1);
-		if (i >= width) { //not at the top
-			//n.push(i-1-width);
-		}
-		if (i < (height-1)*width) { //not at the bottom
-			//n.push(i-1+width);
-		}
-	}
-	if (i%width != width-1) { //not at the right
-		//n.push(i+1);
-		if (i >= width) { //not at the top
-			//n.push(i+1-width);
-		}
-		if (i < (height-1)*width) { //not at the bottom
-			//n.push(i+1+width);
-		}
-	}
-	if (i >= width) { //not at the top
-		//n.push(i-width);
-	}
-	if (i < (height-1)*width) { //not at the bottom
-		//n.push(i+width);
-	}
+        //n.push(i-1);
+        if (i >= width) { //not at the top
+            //n.push(i-1-width);
+        }
+        if (i < (height-1)*width) { //not at the bottom
+            //n.push(i-1+width);
+        }
+    }
+    if (i%width != width-1) { //not at the right
+        //n.push(i+1);
+        if (i >= width) { //not at the top
+            //n.push(i+1-width);
+        }
+        if (i < (height-1)*width) { //not at the bottom
+            //n.push(i+1+width);
+        }
+    }
+    if (i >= width) { //not at the top
+        //n.push(i-width);
+    }
+    if (i < (height-1)*width) { //not at the bottom
+        //n.push(i+width);
+    }
     return something_changed;
 }
 
