@@ -6,8 +6,14 @@
 #include "mosaic_utils.c"
 #include "mosaic_solver.c"
 
-void help_text(char cmd[]) {
-    printf("Usage:\n\t%s [file]\n\nfile\t\tfile to read the puzzle from [optional; default=STDIN]]", cmd);
+void help_text(char* cmd) {
+    char* help_str = "Usage:\n\
+\t%s [options] [file]\n\
+\n\
+file\t\tfile to read the puzzle from [optional; default=STDIN]\n\
+options:\n\
+\t-p,--print\tprint the mosaic before solving\n";
+    printf("Usage:\n\t%s [file]\n\nfile\t\tfile to read the puzzle from [default=STDIN]\n", cmd);
     exit(EXIT_SUCCESS);
 }
 
@@ -53,6 +59,13 @@ int main(int argc, char *argv[]) {
     // for (int i = 0; i < width * height; i++) {
         // printf("%c", m_contents[i] + '0');
     // }
+    game_state st = solve_easy_steps(width, height, m_contents);
+    if (st == SOLVED) {
+        puts("SOLVED!");
+        print_mosaic_field_colour(width, height, m_contents);
+    } else {
+        puts("NOT SOLVED");
+    }
     
     
     

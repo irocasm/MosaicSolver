@@ -1,3 +1,5 @@
+#include "mosaic_macro.h"
+
 /**
  * returns 0 if successful, 1 otherwise
  */
@@ -92,4 +94,24 @@ int read_mosaic_file(FILE *file, int width, int height, uint8_t *fcontents) {
     }
 
     return EXIT_SUCCESS;
+}
+
+void print_mosaic_field_colour(int width, int height, uint8_t *field) {
+    char out = ' ';
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; c < width; c++) {
+            if (F_GETCOLOUR(r*width+c, field) == F_BLACK) {
+                out = 'B';
+            } else if (F_GETCOLOUR(r*width+c, field) == F_WHITE) {
+                out = '.';
+            } else {
+                out = '/';
+            }
+            putchar(out);
+        }
+        putchar('\n');
+    }
+}
+void print_mosaic_field_num(int width, int height, uint8_t *field) {
+    // TODO
 }

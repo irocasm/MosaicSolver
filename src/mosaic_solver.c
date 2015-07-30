@@ -1,11 +1,4 @@
-#define F_NOCOLOUR 0
-#define F_BLACK 0x10
-#define F_WHITE 0x20
-#define F_NUMBER(i, field) ((field[i]) & 0xF)
-#define F_GETCOLOUR(i, field) ((field[i]) & 0x30)
-#define F_SETCOLOUR(i, field, colour) field[i] = (field[i] & ~0x30) | colour;
-#define F_ISCOMPLETE(i, field) (((field[i]) & 0x80) == 0x80)
-#define F_MARKCOMPLETE(i, field) field[i] |= 0x80;
+#include "mosaic_macro.h"
 
 typedef struct {
     uint8_t sum;
@@ -19,65 +12,149 @@ typedef struct {
 static void get_neighbour_stats(int i, int width, int height, uint8_t *field, neighbour_stats *stats) {
     assert(i >= 0 && i < width * height);
     assert(stats->sum == 0 && stats->black == 0 && stats->white == 0);
-    // TODO
-    //n.push(i);
+
+    stats->sum++;
+    if (F_GETCOLOUR(i, field) == F_BLACK) {
+        stats->black++;
+    } else if (F_GETCOLOUR(i, field) == F_WHITE) {
+        stats->white++;
+    }
     if (i%width != 0) { //not at the left
-        //n.push(i-1);
+        stats->sum++;
+        if (F_GETCOLOUR(i-1, field) == F_BLACK) {
+            stats->black++;
+        } else if (F_GETCOLOUR(i-1, field) == F_WHITE) {
+            stats->white++;
+        }
         if (i >= width) { //not at the top
-            //n.push(i-1-width);
+            stats->sum++;
+            if (F_GETCOLOUR(i-1-width, field) == F_BLACK) {
+                stats->black++;
+            } else if (F_GETCOLOUR(i-1-width, field) == F_WHITE) {
+                stats->white++;
+            }
         }
         if (i < (height-1)*width) { //not at the bottom
-            //n.push(i-1+width);
+            stats->sum++;
+            if (F_GETCOLOUR(i-1+width, field) == F_BLACK) {
+                stats->black++;
+            } else if (F_GETCOLOUR(i-1+width, field) == F_WHITE) {
+                stats->white++;
+            }
         }
     }
     if (i%width != width-1) { //not at the right
-        //n.push(i+1);
+        stats->sum++;
+        if (F_GETCOLOUR(i+1, field) == F_BLACK) {
+            stats->black++;
+        } else if (F_GETCOLOUR(i+1, field) == F_WHITE) {
+            stats->white++;
+        }
         if (i >= width) { //not at the top
-            //n.push(i+1-width);
+            stats->sum++;
+            if (F_GETCOLOUR(i+1-width, field) == F_BLACK) {
+                stats->black++;
+            } else if (F_GETCOLOUR(i+1-width, field) == F_WHITE) {
+                stats->white++;
+            }
         }
         if (i < (height-1)*width) { //not at the bottom
-            //n.push(i+1+width);
+            stats->sum++;
+            if (F_GETCOLOUR(i+1+width, field) == F_BLACK) {
+                stats->black++;
+            } else if (F_GETCOLOUR(i+1+width, field) == F_WHITE) {
+                stats->white++;
+            }
         }
     }
     if (i >= width) { //not at the top
-        //n.push(i-width);
+        stats->sum++;
+        if (F_GETCOLOUR(i-width, field) == F_BLACK) {
+            stats->black++;
+        } else if (F_GETCOLOUR(i-width, field) == F_WHITE) {
+            stats->white++;
+        }
     }
     if (i < (height-1)*width) { //not at the bottom
-        //n.push(i+width);
+        stats->sum++;
+        if (F_GETCOLOUR(i+width, field) == F_BLACK) {
+            stats->black++;
+        } else if (F_GETCOLOUR(i+width, field) == F_WHITE) {
+            stats->white++;
+        }
     }
 }
 /**
+ * Sets all unset neighbours of of cell i to the specified colour.
+ *
  * param colour: 0x10 BLACK, 0x20 WHITE
  * returns 1 if something changed, 0 otherwise
  */
 static int set_neighbours_to(int i, int width, int height, uint8_t *field, int colour) {
     assert(i >= 0 && i < width * height);
+    assert(colour == F_BLACK || colour == F_WHITE);
     int something_changed = 0;
-    // TODO
-    //n.push(i);
+
+    if (F_GETCOLOUR(i, field) == F_NOCOLOUR) {
+        F_SETCOLOUR(i, field, colour);
+        assert(F_GETCOLOUR(i, field) == colour);
+        something_changed = 1;
+    }
     if (i%width != 0) { //not at the left
-        //n.push(i-1);
+        if (F_GETCOLOUR(i-1, field) == F_NOCOLOUR) {
+            F_SETCOLOUR(i-1, field, colour);
+            assert(F_GETCOLOUR(i-1, field) == colour);
+            something_changed = 1;
+        }
         if (i >= width) { //not at the top
-            //n.push(i-1-width);
+            if (F_GETCOLOUR(i-1-width, field) == F_NOCOLOUR) {
+                F_SETCOLOUR(i-1-width, field, colour);
+                assert(F_GETCOLOUR(i-1-width, field) == colour);
+                something_changed = 1;
+            }
         }
         if (i < (height-1)*width) { //not at the bottom
-            //n.push(i-1+width);
+            if (F_GETCOLOUR(i-1+width, field) == F_NOCOLOUR) {
+                F_SETCOLOUR(i-1+width, field, colour);
+                assert(F_GETCOLOUR(i-1+width, field) == colour);
+                something_changed = 1;
+            }
         }
     }
     if (i%width != width-1) { //not at the right
-        //n.push(i+1);
+        if (F_GETCOLOUR(i+1, field) == F_NOCOLOUR) {
+            F_SETCOLOUR(i+1, field, colour);
+            assert(F_GETCOLOUR(i+1, field) == colour);
+            something_changed = 1;
+        }
         if (i >= width) { //not at the top
-            //n.push(i+1-width);
+            if (F_GETCOLOUR(i+1-width, field) == F_NOCOLOUR) {
+                F_SETCOLOUR(i+1-width, field, colour);
+                assert(F_GETCOLOUR(i+1-width, field) == colour);
+                something_changed = 1;
+            }
         }
         if (i < (height-1)*width) { //not at the bottom
-            //n.push(i+1+width);
+            if (F_GETCOLOUR(i+1+width, field) == F_NOCOLOUR) {
+                F_SETCOLOUR(i+1+width, field, colour);
+                assert(F_GETCOLOUR(i+1+width, field) == colour);
+                something_changed = 1;
+            }
         }
     }
     if (i >= width) { //not at the top
-        //n.push(i-width);
+        if (F_GETCOLOUR(i-width, field) == F_NOCOLOUR) {
+            F_SETCOLOUR(i-width, field, colour);
+            assert(F_GETCOLOUR(i-width, field) == colour);
+            something_changed = 1;
+        }
     }
     if (i < (height-1)*width) { //not at the bottom
-        //n.push(i+width);
+        if (F_GETCOLOUR(i+width, field) == F_NOCOLOUR) {
+            F_SETCOLOUR(i+width, field, colour);
+            assert(F_GETCOLOUR(i+width, field) == colour);
+            something_changed = 1;
+        }
     }
     return something_changed;
 }
@@ -91,7 +168,6 @@ typedef enum {
  * Solves a (possibly partially solved) mosaic puzzle
  * using only easy steps.
  */
-
 game_state solve_easy_steps(int width, int height, uint8_t *field) {
     neighbour_stats stats = {0, 0, 0};
     int something_changed = 1;
@@ -102,6 +178,9 @@ game_state solve_easy_steps(int width, int height, uint8_t *field) {
             if (F_NUMBER(i, field) == 10 || F_ISCOMPLETE(i, field)) {
                 continue;
             }
+            stats.sum = 0; //reset stats
+            stats.black = 0;
+            stats.white = 0;
             get_neighbour_stats(i, width, height, field, &stats);
             if (stats.black == F_NUMBER(i, field)) {
                 // colour 
