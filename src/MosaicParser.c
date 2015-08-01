@@ -13,6 +13,7 @@ void help_text(char* cmd) {
 file\t\tfile to read the puzzle from [default=STDIN]\n\
 \n\
 -s, --show\tshow the solution\n\
+-s2, --show2\tshow the solution with every character doubled\n\
 -p, --print\tprint the mosaic before solving\n\
 --help\t\tshow this help\n";
     printf(help_str, cmd);
@@ -23,6 +24,7 @@ int main(int argc, char *argv[]) {
     FILE *fp;
     int arg_print = 0;
     int arg_show = 0;
+    int arg_show2 = 0;
     int width = 0, height = 0; // width and height of puzzle
     uint8_t *m_contents; // puzzle data
                        // bit-layout per field/byte: cxssnnnn
@@ -47,7 +49,12 @@ int main(int argc, char *argv[]) {
             arg_print = 1;
         } else
         if (strcmp(argv[argn], "-s") == 0 || strcmp(argv[argn], "--show") == 0) {
-            arg_show = 1;
+            arg_show  = 1;
+            arg_show2 = 0;
+        } else
+        if (strcmp(argv[argn], "-2") == 0 || strcmp(argv[argn], "--show2") == 0) {
+            arg_show  = 0;
+            arg_show2 = 1;
         } else {
             fprintf(stderr, "unknown parameter: %s\n", argv[argn]);
         }
@@ -83,11 +90,15 @@ int main(int argc, char *argv[]) {
         if (arg_show) {
             print_mosaic_field_colour(width, height, m_contents);
         }
+        if (arg_show2) {
+            print_mosaic_field_colour2(width, height, m_contents);
+        }
         return EXIT_SUCCESS;
     }
     
     
     
+    puts("DIDN'T SOLVE");
     //free(m_contents);
     return EXIT_SUCCESS;
 }
