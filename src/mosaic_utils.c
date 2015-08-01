@@ -113,5 +113,10 @@ void print_mosaic_field_colour(int width, int height, uint8_t *field) {
     }
 }
 void print_mosaic_field_num(int width, int height, uint8_t *field) {
-    // TODO
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; c < width; c++) {
+            putchar(F_NUMBER(r*width+c, field) == 10 ? '.' : F_NUMBER(r*width+c, field) + '0');
+        }
+        putchar('\n');
+    }
 }
