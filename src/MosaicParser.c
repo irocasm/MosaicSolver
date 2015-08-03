@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     if (err) {
         return EXIT_FAILURE;
     }
-    //printf("width: %d, height: %d\n", width, height);
+
     m_contents = (uint8_t*) malloc(width * height * sizeof(uint8_t));
     if (m_contents == NULL) {
         fputs("ERROR: not sufficient memory!\n", stderr);
@@ -86,13 +86,16 @@ int main(int argc, char *argv[]) {
     }
     game_state st = solve_easy_steps(width, height, m_contents);
     if (st == SOLVED) {
-        puts("EASY SOLVABLE");
+        puts("EASY");
         if (arg_show) {
             print_mosaic_field_colour(width, height, m_contents);
         }
         if (arg_show2) {
             print_mosaic_field_colour2(width, height, m_contents);
         }
+        return EXIT_SUCCESS;
+    } else if (st == NOT_SOLVABLE) {
+        puts("NOT SOLVABLE");
         return EXIT_SUCCESS;
     }
     

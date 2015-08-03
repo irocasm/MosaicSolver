@@ -162,7 +162,7 @@ static int set_neighbours_to(int i, int width, int height, uint8_t *field, int c
 typedef enum {
    NOT_SOLVED,
    SOLVED,
-   NOT_SOLVABLE
+   NOT_SOLVABLE // TODO: divide in CONFLICT and UNSUFFICIENT_INFO?
 } game_state;
 /**
  * Solves a (possibly partially solved) mosaic puzzle
@@ -203,5 +203,10 @@ game_state solve_easy_steps(int width, int height, uint8_t *field) {
             return NOT_SOLVED;
         }
     }
+    #ifndef NDEBUG
+    for (int i = 0; i < width * height; i++) {
+        assert(F_NUMBER(i, field) == 10 || F_ISCOMPLETE(i, field));
+    }
+    #endif
     return SOLVED;
 }
